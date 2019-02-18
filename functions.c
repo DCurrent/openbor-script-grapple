@@ -88,48 +88,44 @@ void bind0010(void vTar, int offset_x, int offset_y, int offset_z, int iDir, int
 	vAni:       Animation for bound entity.
 	*/
 
-	void  vSelf = getlocalvar("self");                //Calling entity.
-	void  vTarget = grapple_target(vTar, vSelf);               //Target entity.
+	void  ent = getlocalvar("self");                // Calling entity.
+	void  target = grapple_target(vTar, ent);       // Target entity.
 
-	if (vTarget)
+	if (target)
 	{
 		// If caller's drawmethod is on, then
 		// adjust offsets to caller's current scale.
-		if (getdrawmethod(vSelf, "enabled") == 1)
+		if (getdrawmethod(ent, "enabled") == 1)
 		{
-			offset_x = dc_kanga_adjust_to_scale_x(vSelf, offset_x);
-			offset_y = dc_kanga_adjust_to_scale_y(vSelf, offset_y);
+			offset_x = dc_kanga_adjust_to_scale_x(ent, offset_x);
+			offset_y = dc_kanga_adjust_to_scale_y(ent, offset_y);
 		}
 
 		// Get binding property for spawn.
-		void binding = get_entity_property(vTarget, "binding");
-
-		// Get binding toggle and enable flags.
-		void binding_enable = get_binding_property(binding, "positioning");
-		void binding_axis = get_binding_property(binding, "offset");
+		void bind = get_entity_property(target, "bind");
 
 		// Enable binding on each axis.
-		set_axis_principal_int_property(binding_enable, "x", openborconstant("BINDING_POSITIONING_TARGET"));
-		set_axis_principal_int_property(binding_enable, "y", openborconstant("BINDING_POSITIONING_TARGET"));
-		set_axis_principal_int_property(binding_enable, "z", openborconstant("BINDING_POSITIONING_TARGET"));
+		set_bind_property(bind, "mode_x", openborconstant("BIND_MODE_TARGET"));
+		set_bind_property(bind, "mode_y", openborconstant("BIND_MODE_TARGET"));
+		set_bind_property(bind, "mode_z", openborconstant("BIND_MODE_TARGET"));
 
 		// Set the binding offset.
-		set_axis_principal_int_property(binding_axis, "x", offset_x);
-		set_axis_principal_int_property(binding_axis, "y", offset_y);
-		set_axis_principal_int_property(binding_axis, "z", offset_z);
+		set_bind_property(bind, "offset_x", offset_x);
+		set_bind_property(bind, "offset_y", offset_y);
+		set_bind_property(bind, "offset_z", offset_z);
 
 		// Set other binding properties.
-		//set_binding_property(binding, "matching", openborconstant("BINDING_MATCHING_NONE"));
-		set_binding_property(binding, "direction", iDir);
-		set_binding_property(binding, "target", vSelf);
+		//set_bind_property(binding, "matching", openborconstant("BINDING_MATCHING_NONE"));
+		set_bind_property(bind, "direction", iDir);
+		set_bind_property(bind, "target", ent);
 
-		set_binding_property(binding,"tag", 24);
+		set_bind_property(bind,"tag", 24);
 
 		// Update bound entity's auto scaling.
-		dc_kanga_z_position_autoscale(vTarget);
+		dc_kanga_z_position_autoscale(target);
 
-		performattack(vTarget, DEFPOSE, 1);
-		changeentityproperty(vTarget, "animpos", iFrame);
+		performattack(target, DEFPOSE, 1);
+		changeentityproperty(target, "animpos", iFrame);
 
 		/*
 		Reset engine's lasthit variants. Otherwise, target will assume sweep values when

@@ -14,7 +14,7 @@ int dc_grapple_release_all(void target)
 	int entity_exists;		// Entity cursor is not a dangling pointer.
 	void entity_cursor;		// Entity in loop.
 	int drop;				// Falling state.
-	void binding;			// Binding property.
+	void bind;				// Binding property.
 	void bind_target;		// 
 	int animation_current;
 	int release_count;		// How many entities have been released?
@@ -45,7 +45,7 @@ int dc_grapple_release_all(void target)
 		}
 
 		// In a grappled pose?
-		animation_current = get_entity_property(entity_cursor, "animation_animation");
+		animation_current = get_entity_property(entity_cursor, "animation_id");
 
 		if (animation_current != DEFPOSE)
 		{
@@ -53,8 +53,8 @@ int dc_grapple_release_all(void target)
 		}
 
 		// Bound to function's target?
-		binding = get_entity_property(entity_cursor, "binding");
-		bind_target = get_binding_property(binding, "target");
+		bind = get_entity_property(entity_cursor, "bind");
+		bind_target = get_bind_property(bind, "target");
 
 		if (bind_target != target)
 		{
@@ -63,7 +63,7 @@ int dc_grapple_release_all(void target)
 
 		// Reelase bind and knock entity down to ensure
 		// it is "reset".
-		set_binding_property(binding, "target", NULL());
+		set_bind_property(bind, "target", NULL());
 		damageentity(entity_cursor, target, DC_GRAPPLE_RESET_FORCE, DC_GRAPPLE_RESET_DROP, openborconstant("ATK_NORMAL"));
 
 		// Increment reelase count;
