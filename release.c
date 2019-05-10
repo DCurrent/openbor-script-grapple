@@ -47,7 +47,7 @@ int dc_grapple_release_all(void target)
 		// In a grappled pose?
 		animation_current = get_entity_property(entity_cursor, "animation_id");
 
-		if (animation_current != DEFPOSE)
+		if (animation_current != openborconstant("ANI_FOLLOW10"))
 		{
 			continue;
 		}
@@ -61,7 +61,7 @@ int dc_grapple_release_all(void target)
 			continue;
 		}
 
-		// Reelase bind and knock entity down to ensure
+		// Release bind and knock entity down to ensure
 		// it is "reset".
 		set_bind_property(bind, "target", NULL());
 		damageentity(entity_cursor, target, DC_GRAPPLE_RESET_FORCE, DC_GRAPPLE_RESET_DROP, openborconstant("ATK_NORMAL"));

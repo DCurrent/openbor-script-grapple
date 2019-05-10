@@ -4,12 +4,6 @@
 
 #include "data/scripts/dc_kanga/main.c"
 
-// From old bind0010
-#include "data/scripts/vars/anims.h"
-#include "data/scripts/vars/entity.h"
-#include "data/scripts/vars/frames.h"
-// -From old bind0010
-
 #ifndef DC_GRAPPLE
 
 #define DC_GRAPPLE 1
